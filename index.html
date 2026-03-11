@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Outreach System</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Business Outreach System</h1>
+
+
+<!-- DEFAULT SETTINGS -->
+
+<section class="settings">
+
+<h2>Default Settings</h2>
+
+<div class="settings-grid">
+
+<div>
+<label>Default Location</label>
+<input type="text" id="defaultLocation" placeholder="Example: Johannesburg">
+</div>
+
+<div>
+<label>Select Industry</label>
+<select id="industrySelect"></select>
+</div>
+
+<div>
+<label>Add Industry</label>
+<input type="text" id="newIndustry" placeholder="Example: Education">
+<button id="addIndustryBtn">Add Industry</button>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- MESSAGE COMPOSER -->
+
+<section class="composer">
+
+<h2>Message Composer</h2>
+
+<div class="composer-grid">
+
+<input id="subject" placeholder="Subject">
+
+<textarea id="message" placeholder="Write outreach message here"></textarea>
+
+<input type="file" id="imageUpload">
+
+<button id="saveTemplate">Save Template</button>
+
+</div>
+
+</section>
+
+
+
+<!-- LEAD DISCOVERY -->
+
+<section class="lead-discovery">
+
+<h2>Business Discovery</h2>
+
+<div class="discovery-grid">
+
+<input id="searchLocation" placeholder="City">
+
+<select id="searchIndustry"></select>
+
+<button id="findBusinesses">Find Businesses</button>
+
+</div>
+
+</section>
+
+
+
+<!-- BUSINESS RESULTS -->
+
+<section class="results">
+
+<h2>Discovered Businesses</h2>
+
+<div class="table-wrap">
+
+<table id="resultsTable">
+
+<thead>
+
+<tr>
+
+<th>Business</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Website</th>
+<th>Send</th>
+
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<!-- OUTREACH TRACKER -->
+
+<section class="tracker">
+
+<h2>Outreach Tracker</h2>
+
+<div class="table-wrap">
+
+<table id="trackerTable">
+
+<thead>
+
+<tr>
+
+<th>Business</th>
+<th>Industry</th>
+<th>Location</th>
+<th>Contact</th>
+<th>Platform</th>
+<th>Status</th>
+<th>Follow Up</th>
+<th>Timer</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<!-- NOTIFICATIONS -->
+
+<div id="notificationPanel">
+
+<h3>Reminders</h3>
+
+<ul id="notifications"></ul>
+
+</div>
+
+
+
+<!-- POPUP ALERT -->
+
+<div id="popupReminder">
+
+<p>Follow up reminder!</p>
+
+<button id="dismissPopup">Dismiss</button>
+
+</div>
+
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+
+  </html>
