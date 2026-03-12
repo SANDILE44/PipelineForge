@@ -6,31 +6,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Outreach System</title>
+<title>PipelineForge Outreach</title>
 
 <link rel="stylesheet" href="styles.css">
 
 </head>
 
-
 <body>
 
 <div class="container">
 
-<h1>Business Outreach System</h1>
+<header>
+<h1>PipelineForge Outreach System</h1>
+</header>
 
 
-<!-- DEFAULT SETTINGS -->
 
-<section class="settings">
+<!-- SETTINGS -->
 
-<h2>Default Settings</h2>
+<section class="card">
 
-<div class="settings-grid">
+<h2>Settings</h2>
+
+<div class="grid">
 
 <div>
-<label>Default Location</label>
-<input type="text" id="defaultLocation" placeholder="Example: Johannesburg">
+<label>Default City</label>
+<input type="text" id="defaultLocation" placeholder="Example: Durban">
 </div>
 
 <div>
@@ -40,8 +42,8 @@
 
 <div>
 <label>Add Industry</label>
-<input type="text" id="newIndustry" placeholder="Example: Education">
-<button id="addIndustryBtn">Add Industry</button>
+<input type="text" id="newIndustry" placeholder="Example: Marketing">
+<button id="addIndustryBtn">Add</button>
 </div>
 
 </div>
@@ -52,19 +54,30 @@
 
 <!-- MESSAGE COMPOSER -->
 
-<section class="composer">
+<section class="card">
 
-<h2>Message Composer</h2>
+<h2>Message Template</h2>
 
-<div class="composer-grid">
+<div class="grid">
 
+<div>
+<label>Subject</label>
 <input id="subject" placeholder="Subject">
+</div>
 
-<textarea id="message" placeholder="Write outreach message here"></textarea>
+<div>
+<label>Message</label>
+<textarea id="message" placeholder="Write outreach message"></textarea>
+</div>
 
+<div>
+<label>Attach Image</label>
 <input type="file" id="imageUpload">
+</div>
 
+<div>
 <button id="saveTemplate">Save Template</button>
+</div>
 
 </div>
 
@@ -72,19 +85,27 @@
 
 
 
-<!-- LEAD DISCOVERY -->
+<!-- BUSINESS DISCOVERY -->
 
-<section class="lead-discovery">
+<section class="card">
 
-<h2>Business Discovery</h2>
+<h2>Discover Businesses</h2>
 
-<div class="discovery-grid">
+<div class="grid">
 
+<div>
+<label>City</label>
 <input id="searchLocation" placeholder="City">
+</div>
 
+<div>
+<label>Industry</label>
 <select id="searchIndustry"></select>
+</div>
 
+<div>
 <button id="findBusinesses">Find Businesses</button>
+</div>
 
 </div>
 
@@ -92,9 +113,9 @@
 
 
 
-<!-- BUSINESS RESULTS -->
+<!-- RESULTS -->
 
-<section class="results">
+<section class="card">
 
 <h2>Discovered Businesses</h2>
 
@@ -103,17 +124,13 @@
 <table id="resultsTable">
 
 <thead>
-
 <tr>
-
 <th>Business</th>
 <th>Email</th>
 <th>Phone</th>
 <th>Website</th>
 <th>Send</th>
-
 </tr>
-
 </thead>
 
 <tbody></tbody>
@@ -128,7 +145,7 @@
 
 <!-- OUTREACH TRACKER -->
 
-<section class="tracker">
+<section class="card">
 
 <h2>Outreach Tracker</h2>
 
@@ -137,21 +154,17 @@
 <table id="trackerTable">
 
 <thead>
-
 <tr>
-
 <th>Business</th>
 <th>Industry</th>
-<th>Location</th>
+<th>City</th>
 <th>Contact</th>
 <th>Platform</th>
 <th>Status</th>
 <th>Follow Up</th>
 <th>Timer</th>
-<th>Actions</th>
-
+<th>Action</th>
 </tr>
-
 </thead>
 
 <tbody></tbody>
@@ -164,23 +177,23 @@
 
 
 
-<!-- NOTIFICATIONS -->
+<!-- REMINDERS -->
 
-<div id="notificationPanel">
+<section class="card">
 
-<h3>Reminders</h3>
+<h2>Reminders</h2>
 
 <ul id="notifications"></ul>
 
-</div>
+</section>
 
 
 
-<!-- POPUP ALERT -->
+<!-- POPUP -->
 
-<div id="popupReminder">
+<div id="popupReminder" class="popup">
 
-<p>Follow up reminder!</p>
+<p>Follow-up reminder!</p>
 
 <button id="dismissPopup">Dismiss</button>
 
@@ -189,9 +202,8 @@
 
 </div>
 
-
 <script src="app.js"></script>
 
 </body>
 
-  </html>
+</html>
