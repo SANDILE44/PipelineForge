@@ -14,7 +14,6 @@ let industries = JSON.parse(localStorage.getItem("industries")) || [
 let tracker = JSON.parse(localStorage.getItem("tracker")) || [];
 let template = JSON.parse(localStorage.getItem("template")) || {};
 
-
 // ===============================
 // ELEMENTS
 // ===============================
@@ -35,7 +34,6 @@ const trackerTable = document.querySelector("#trackerTable tbody");
 const notificationList = document.getElementById("notifications");
 const popup = document.getElementById("popupReminder");
 
-
 // ===============================
 // SAVE FUNCTIONS
 // ===============================
@@ -51,7 +49,6 @@ localStorage.setItem("tracker",JSON.stringify(tracker));
 function saveTemplate(){
 localStorage.setItem("template",JSON.stringify(template));
 }
-
 
 // ===============================
 // RENDER INDUSTRIES
@@ -77,7 +74,6 @@ searchIndustry.appendChild(opt2);
 
 }
 
-
 // ===============================
 // ADD INDUSTRY
 // ===============================
@@ -96,19 +92,21 @@ newIndustry.value="";
 
 };
 
-
 // ===============================
 // DEFAULT LOCATION
 // ===============================
 
-defaultLocationInput.value = localStorage.getItem("defaultLocation") || "";
+defaultLocationInput.value =
+localStorage.getItem("defaultLocation") || "";
 
 defaultLocationInput.addEventListener("change",()=>{
 
-localStorage.setItem("defaultLocation",defaultLocationInput.value);
+localStorage.setItem(
+"defaultLocation",
+defaultLocationInput.value
+);
 
 });
-
 
 // ===============================
 // MESSAGE TEMPLATE
@@ -128,7 +126,6 @@ alert("Template saved");
 
 };
 
-
 // ===============================
 // BUSINESS DISCOVERY (BACKEND)
 // ===============================
@@ -138,10 +135,14 @@ document.getElementById("findBusinesses").onclick=function(){
 let industry=searchIndustry.value;
 let city=document.getElementById("searchLocation").value;
 
+if(!city){
+alert("Enter a city");
+return;
+}
+
 autoDiscoverBusinesses(industry,city);
 
 };
-
 
 async function autoDiscoverBusinesses(industry,city){
 
@@ -150,7 +151,7 @@ resultsTable.innerHTML="<tr><td colspan='5'>Searching businesses...</td></tr>";
 try{
 
 const res = await fetch(
-`https://pipelineforge.onrender.com/api/search?industry=${industry}&city=${city}`
+"https://pipelineforge.onrender.com/api/search?industry=${industry}&city=${city}"
 );
 
 const businesses = await res.json();
@@ -165,7 +166,6 @@ resultsTable.innerHTML="<tr><td colspan='5'>Failed to fetch businesses</td></tr>
 
 }
 
-
 // ===============================
 // RENDER DISCOVERED BUSINESSES
 // ===============================
@@ -173,6 +173,13 @@ resultsTable.innerHTML="<tr><td colspan='5'>Failed to fetch businesses</td></tr>
 function renderDiscoveredBusinesses(list,industry,city){
 
 resultsTable.innerHTML="";
+
+if(!list.length){
+
+resultsTable.innerHTML="<tr><td colspan='5'>No businesses found</td></tr>";
+return;
+
+}
 
 list.forEach(b=>{
 
@@ -183,28 +190,17 @@ row.innerHTML=`
 <td>${b.name || "-"}</td>
 <td>${b.email || "-"}</td>
 <td>${b.phone || "-"}</td>
-<td><a href="${b.website}" target="_blank">${b.website || "-"}</a></td>
-
-<td>
-
-<button onclick="sendToTracker('${b.name}','${industry}','${city}','${b.email}')">
+<td><a href="${b.website}" target="_blank">${b.website || "-"}</a></td><td><button onclick="sendToTracker('${b.name}','${industry}','${city}','${b.email}')">
 Add
-</button>
-
-<button onclick="quickOutreach('${b.name}','${b.email}','${b.phone}')">
+</button><button onclick="quickOutreach('${b.name}','${b.email}','${b.phone}')">
 Send
-</button>
-
-</td>
-
-`;
+</button></td>`;
 
 resultsTable.appendChild(row);
 
 });
 
 }
-
 
 // ===============================
 // ADD TO TRACKER
@@ -231,7 +227,6 @@ renderTracker();
 
 }
 
-
 // ===============================
 // STATUS COLORS
 // ===============================
@@ -247,7 +242,6 @@ if(status==="Closed") return "status-closed";
 return "";
 
 }
-
 
 // ===============================
 // TRACKER TABLE
@@ -275,21 +269,16 @@ row.innerHTML=`
 <td>${lead.platform}</td>
 <td class="${statusClass(lead.status)}">${lead.status}</td>
 <td>${new Date(lead.followup).toLocaleString()}</td>
-<td>${timerText}</td>
-
-<td>
+<td>${timerText}</td><td>
 <button onclick="editStatus(${index})">Edit</button>
 <button onclick="deleteLead(${index})">Delete</button>
-</td>
-
-`;
+</td>`;
 
 trackerTable.appendChild(row);
 
 });
 
 }
-
 
 // ===============================
 // DELETE LEAD
@@ -303,7 +292,6 @@ saveTracker();
 renderTracker();
 
 }
-
 
 // ===============================
 // EDIT STATUS
@@ -322,7 +310,6 @@ renderTracker();
 
 }
 
-
 // ===============================
 // QUICK OUTREACH
 // ===============================
@@ -334,7 +321,7 @@ let message=encodeURIComponent(template.message || "Hello, I wanted to reach out
 
 if(email){
 
-let emailLink=`mailto:${email}?subject=${subject}&body=${message}`;
+let emailLink="mailto:${email}?subject=${subject}&body=${message}";
 window.open(emailLink);
 
 }
@@ -343,13 +330,12 @@ if(phone){
 
 let number=phone.replace(/\D/g,'');
 
-let whatsapp=`https://wa.me/${number}?text=${message}`;
+let whatsapp="https://wa.me/${number}?text=${message}";
 window.open(whatsapp);
 
 }
 
 }
-
 
 // ===============================
 // REMINDER SYSTEM
@@ -367,7 +353,7 @@ let minutes=Math.floor(diff/60000);
 if(minutes<=60 && minutes>0){
 
 let li=document.createElement("li");
-li.textContent=`Follow up with ${lead.name} in ${minutes} minutes`;
+li.textContent="Follow up with ${lead.name} in ${minutes} minutes";
 
 notificationList.appendChild(li);
 
@@ -381,7 +367,6 @@ popup.style.display="block";
 
 }
 
-
 // ===============================
 // POPUP CLOSE
 // ===============================
@@ -391,7 +376,6 @@ document.getElementById("dismissPopup").onclick=function(){
 popup.style.display="none";
 
 };
-
 
 // ===============================
 // TIMER LOOP
@@ -404,10 +388,10 @@ renderTracker();
 
 },60000);
 
-
 // ===============================
 // INIT
 // ===============================
 
 renderIndustries();
 renderTracker();
+checkReminders();
