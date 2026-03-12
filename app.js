@@ -1,4 +1,10 @@
 // ===============================
+// CONFIG
+// ===============================
+
+const API_BASE = "https://pipelineforge.onrender.com/api"
+
+// ===============================
 // STORAGE
 // ===============================
 
@@ -9,46 +15,49 @@ let industries = JSON.parse(localStorage.getItem("industries")) || [
 "Real Estate",
 "Consulting",
 "IT Services"
-];
+]
 
-let tracker = JSON.parse(localStorage.getItem("tracker")) || [];
-let template = JSON.parse(localStorage.getItem("template")) || {};
+let tracker = JSON.parse(localStorage.getItem("tracker")) || []
+let template = JSON.parse(localStorage.getItem("template")) || {}
+
 
 // ===============================
 // ELEMENTS
 // ===============================
 
-const industrySelect = document.getElementById("industrySelect");
-const searchIndustry = document.getElementById("searchIndustry");
-const newIndustry = document.getElementById("newIndustry");
-const addIndustryBtn = document.getElementById("addIndustryBtn");
+const industrySelect = document.getElementById("industrySelect")
+const searchIndustry = document.getElementById("searchIndustry")
+const newIndustry = document.getElementById("newIndustry")
+const addIndustryBtn = document.getElementById("addIndustryBtn")
 
-const defaultLocationInput = document.getElementById("defaultLocation");
+const defaultLocationInput = document.getElementById("defaultLocation")
 
-const subjectInput = document.getElementById("subject");
-const messageInput = document.getElementById("message");
+const subjectInput = document.getElementById("subject")
+const messageInput = document.getElementById("message")
 
-const resultsTable = document.querySelector("#resultsTable tbody");
-const trackerTable = document.querySelector("#trackerTable tbody");
+const resultsTable = document.querySelector("#resultsTable tbody")
+const trackerTable = document.querySelector("#trackerTable tbody")
 
-const notificationList = document.getElementById("notifications");
-const popup = document.getElementById("popupReminder");
+const notificationList = document.getElementById("notifications")
+const popup = document.getElementById("popupReminder")
+
 
 // ===============================
 // SAVE FUNCTIONS
 // ===============================
 
 function saveIndustries(){
-localStorage.setItem("industries",JSON.stringify(industries));
+localStorage.setItem("industries",JSON.stringify(industries))
 }
 
 function saveTracker(){
-localStorage.setItem("tracker",JSON.stringify(tracker));
+localStorage.setItem("tracker",JSON.stringify(tracker))
 }
 
 function saveTemplate(){
-localStorage.setItem("template",JSON.stringify(template));
+localStorage.setItem("template",JSON.stringify(template))
 }
+
 
 // ===============================
 // RENDER INDUSTRIES
@@ -56,23 +65,24 @@ localStorage.setItem("template",JSON.stringify(template));
 
 function renderIndustries(){
 
-industrySelect.innerHTML="";
-searchIndustry.innerHTML="";
+industrySelect.innerHTML=""
+searchIndustry.innerHTML=""
 
 industries.forEach(ind=>{
 
-let opt1=document.createElement("option");
-opt1.value=ind;
-opt1.textContent=ind;
+let opt1=document.createElement("option")
+opt1.value=ind
+opt1.textContent=ind
 
-let opt2=opt1.cloneNode(true);
+let opt2=opt1.cloneNode(true)
 
-industrySelect.appendChild(opt1);
-searchIndustry.appendChild(opt2);
+industrySelect.appendChild(opt1)
+searchIndustry.appendChild(opt2)
 
-});
+})
 
 }
+
 
 // ===============================
 // ADD INDUSTRY
@@ -80,91 +90,96 @@ searchIndustry.appendChild(opt2);
 
 addIndustryBtn.onclick=function(){
 
-let name=newIndustry.value.trim();
-if(!name) return;
+let name=newIndustry.value.trim()
+if(!name) return
 
-industries.push(name);
+industries.push(name)
 
-saveIndustries();
-renderIndustries();
+saveIndustries()
+renderIndustries()
 
-newIndustry.value="";
+newIndustry.value=""
 
-};
+}
+
 
 // ===============================
 // DEFAULT LOCATION
 // ===============================
 
 defaultLocationInput.value =
-localStorage.getItem("defaultLocation") || "";
+localStorage.getItem("defaultLocation") || ""
 
 defaultLocationInput.addEventListener("change",()=>{
 
 localStorage.setItem(
 "defaultLocation",
 defaultLocationInput.value
-);
+)
 
-});
+})
+
 
 // ===============================
 // MESSAGE TEMPLATE
 // ===============================
 
-subjectInput.value = template.subject || "";
-messageInput.value = template.message || "";
+subjectInput.value = template.subject || ""
+messageInput.value = template.message || ""
 
 document.getElementById("saveTemplate").onclick=function(){
 
-template.subject=subjectInput.value;
-template.message=messageInput.value;
+template.subject=subjectInput.value
+template.message=messageInput.value
 
-saveTemplate();
+saveTemplate()
 
-alert("Template saved");
+alert("Template saved")
 
-};
+}
+
 
 // ===============================
-// BUSINESS DISCOVERY (BACKEND)
+// BUSINESS DISCOVERY
 // ===============================
 
 document.getElementById("findBusinesses").onclick=function(){
 
-let industry=searchIndustry.value;
-let city=document.getElementById("searchLocation").value;
+let industry=searchIndustry.value
+let city=document.getElementById("searchLocation").value
 
 if(!city){
-alert("Enter a city");
-return;
+alert("Enter a city")
+return
 }
 
-autoDiscoverBusinesses(industry,city);
+discoverBusinesses(industry,city)
 
-};
+}
 
-async function autoDiscoverBusinesses(industry,city){
 
-resultsTable.innerHTML="<tr><td colspan='5'>Searching businesses...</td></tr>";
+async function discoverBusinesses(industry,city){
+
+resultsTable.innerHTML="<tr><td colspan='5'>Searching businesses...</td></tr>"
 
 try{
 
 const res = await fetch(
-"https://pipelineforge.onrender.com/api/search?industry=${industry}&city=${city}"
-);
+`${API_BASE}/search?industry=${encodeURIComponent(industry)}&city=${encodeURIComponent(city)}`
+)
 
-const businesses = await res.json();
+const businesses = await res.json()
 
-renderDiscoveredBusinesses(businesses,industry,city);
+renderDiscoveredBusinesses(businesses,industry,city)
 
 }catch(err){
 
-resultsTable.innerHTML="<tr><td colspan='5'>Failed to fetch businesses</td></tr>";
+resultsTable.innerHTML="<tr><td colspan='5'>Failed to fetch businesses</td></tr>"
 
 }
 
 }
+
 
 // ===============================
 // RENDER DISCOVERED BUSINESSES
@@ -172,35 +187,45 @@ resultsTable.innerHTML="<tr><td colspan='5'>Failed to fetch businesses</td></tr>
 
 function renderDiscoveredBusinesses(list,industry,city){
 
-resultsTable.innerHTML="";
+resultsTable.innerHTML=""
 
 if(!list.length){
 
-resultsTable.innerHTML="<tr><td colspan='5'>No businesses found</td></tr>";
-return;
+resultsTable.innerHTML="<tr><td colspan='5'>No businesses found</td></tr>"
+return
 
 }
 
 list.forEach(b=>{
 
-let row=document.createElement("tr");
+let row=document.createElement("tr")
 
 row.innerHTML=`
 
 <td>${b.name || "-"}</td>
 <td>${b.email || "-"}</td>
 <td>${b.phone || "-"}</td>
-<td><a href="${b.website}" target="_blank">${b.website || "-"}</a></td><td><button onclick="sendToTracker('${b.name}','${industry}','${city}','${b.email}')">
+<td><a href="${b.website}" target="_blank">${b.website || "-"}</a></td>
+
+<td>
+
+<button onclick="sendToTracker('${b.name}','${industry}','${city}','${b.email}')">
 Add
-</button><button onclick="quickOutreach('${b.name}','${b.email}','${b.phone}')">
+</button>
+
+<button onclick="quickOutreach('${b.name}','${b.email}','${b.phone}')">
 Send
-</button></td>`;
+</button>
 
-resultsTable.appendChild(row);
+</td>
+`
 
-});
+resultsTable.appendChild(row)
+
+})
 
 }
+
 
 // ===============================
 // ADD TO TRACKER
@@ -218,30 +243,15 @@ platform:"Email",
 status:"Message Sent",
 followup:Date.now()+86400000
 
-};
+}
 
-tracker.unshift(entry);
+tracker.unshift(entry)
 
-saveTracker();
-renderTracker();
+saveTracker()
+renderTracker()
 
 }
 
-// ===============================
-// STATUS COLORS
-// ===============================
-
-function statusClass(status){
-
-if(status==="Message Sent") return "status-sent";
-if(status==="Waiting Reply") return "status-wait";
-if(status==="Replied") return "status-replied";
-if(status==="Follow Up") return "status-follow";
-if(status==="Closed") return "status-closed";
-
-return "";
-
-}
 
 // ===============================
 // TRACKER TABLE
@@ -249,16 +259,16 @@ return "";
 
 function renderTracker(){
 
-trackerTable.innerHTML="";
+trackerTable.innerHTML=""
 
 tracker.forEach((lead,index)=>{
 
-let remaining=lead.followup-Date.now();
-let minutes=Math.floor(remaining/60000);
+let remaining=lead.followup-Date.now()
+let minutes=Math.floor(remaining/60000)
 
-let timerText = minutes>0 ? minutes+"m" : "Due";
+let timerText = minutes>0 ? minutes+"m" : "Due"
 
-let row=document.createElement("tr");
+let row=document.createElement("tr")
 
 row.innerHTML=`
 
@@ -267,18 +277,23 @@ row.innerHTML=`
 <td>${lead.location}</td>
 <td>${lead.contact}</td>
 <td>${lead.platform}</td>
-<td class="${statusClass(lead.status)}">${lead.status}</td>
+<td>${lead.status}</td>
 <td>${new Date(lead.followup).toLocaleString()}</td>
-<td>${timerText}</td><td>
+<td>${timerText}</td>
+
+<td>
 <button onclick="editStatus(${index})">Edit</button>
 <button onclick="deleteLead(${index})">Delete</button>
-</td>`;
+</td>
 
-trackerTable.appendChild(row);
+`
 
-});
+trackerTable.appendChild(row)
+
+})
 
 }
+
 
 // ===============================
 // DELETE LEAD
@@ -286,12 +301,13 @@ trackerTable.appendChild(row);
 
 function deleteLead(i){
 
-tracker.splice(i,1);
+tracker.splice(i,1)
 
-saveTracker();
-renderTracker();
+saveTracker()
+renderTracker()
 
 }
+
 
 // ===============================
 // EDIT STATUS
@@ -299,16 +315,17 @@ renderTracker();
 
 function editStatus(i){
 
-let newStatus=prompt("Update status",tracker[i].status);
+let newStatus=prompt("Update status",tracker[i].status)
 
-if(!newStatus) return;
+if(!newStatus) return
 
-tracker[i].status=newStatus;
+tracker[i].status=newStatus
 
-saveTracker();
-renderTracker();
+saveTracker()
+renderTracker()
 
 }
+
 
 // ===============================
 // QUICK OUTREACH
@@ -316,26 +333,27 @@ renderTracker();
 
 function quickOutreach(name,email,phone){
 
-let subject=encodeURIComponent(template.subject || "Quick question");
-let message=encodeURIComponent(template.message || "Hello, I wanted to reach out.");
+let subject=encodeURIComponent(template.subject || "Quick question")
+let message=encodeURIComponent(template.message || "Hello, I wanted to reach out.")
 
 if(email){
 
-let emailLink="mailto:${email}?subject=${subject}&body=${message}";
-window.open(emailLink);
+let emailLink=`mailto:${email}?subject=${subject}&body=${message}`
+window.open(emailLink)
 
 }
 
 if(phone){
 
-let number=phone.replace(/\D/g,'');
+let number=phone.replace(/\D/g,'')
 
-let whatsapp="https://wa.me/${number}?text=${message}";
-window.open(whatsapp);
+let whatsapp=`https://wa.me/${number}?text=${message}`
+window.open(whatsapp)
+
+}
 
 }
 
-}
 
 // ===============================
 // REMINDER SYSTEM
@@ -343,29 +361,30 @@ window.open(whatsapp);
 
 function checkReminders(){
 
-notificationList.innerHTML="";
+notificationList.innerHTML=""
 
 tracker.forEach(lead=>{
 
-let diff=lead.followup-Date.now();
-let minutes=Math.floor(diff/60000);
+let diff=lead.followup-Date.now()
+let minutes=Math.floor(diff/60000)
 
 if(minutes<=60 && minutes>0){
 
-let li=document.createElement("li");
-li.textContent="Follow up with ${lead.name} in ${minutes} minutes";
+let li=document.createElement("li")
+li.textContent=`Follow up with ${lead.name} in ${minutes} minutes`
 
-notificationList.appendChild(li);
+notificationList.appendChild(li)
 
 }
 
 if(minutes<=15 && minutes>0){
-popup.style.display="block";
+popup.style.display="block"
 }
 
-});
+})
 
 }
+
 
 // ===============================
 // POPUP CLOSE
@@ -373,9 +392,10 @@ popup.style.display="block";
 
 document.getElementById("dismissPopup").onclick=function(){
 
-popup.style.display="none";
+popup.style.display="none"
 
-};
+}
+
 
 // ===============================
 // TIMER LOOP
@@ -383,15 +403,16 @@ popup.style.display="none";
 
 setInterval(()=>{
 
-checkReminders();
-renderTracker();
+checkReminders()
+renderTracker()
 
-},60000);
+},60000)
+
 
 // ===============================
 // INIT
 // ===============================
 
-renderIndustries();
-renderTracker();
-checkReminders();
+renderIndustries()
+renderTracker()
+checkReminders()
